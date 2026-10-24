@@ -1,0 +1,213 @@
+{
+  "uid": "forecast-quality",
+  "title": "Forecast quality",
+  "schemaVersion": 41,
+  "editable": true,
+  "time": {
+    "from": "2015-05-25T00:00:00Z",
+    "to": "2016-06-26T00:00:00Z"
+  },
+  "refresh": "",
+  "panels": [
+    {
+      "type": "row",
+      "title": "Accuracy of served forecasts (scored once their 28 days are over)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "type": "timeseries",
+      "title": "Item-level WAPE by forecast origin",
+      "description": "Lower is better. Each point is the forecast issued that Sunday, scored on the 28 days that followed.",
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "pg"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "pg"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "time_series",
+          "rawSql": "\nSELECT c.date::timestamp AS time, p.wape AS \"served model\", p.naive_wape AS \"seasonal naive\",\n       p.expected_wape AS \"expected at promotion\"\nFROM (SELECT DISTINCT ON (p.origin_d) p.* FROM performance p JOIN requests r USING (request_id)\n           ORDER BY p.origin_d, r.created_at DESC) p JOIN calendar c ON c.d = p.origin_d ORDER BY 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "type": "timeseries",
+      "title": "Store total: daily WAPE and bias",
+      "description": "",
+      "gridPos": {
+        "x": 12,
+        "y": 1,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "pg"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "pg"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "time_series",
+          "rawSql": "\nSELECT c.date::timestamp AS time, p.store_wape AS \"store-level WAPE\", p.bias AS \"bias\"\nFROM (SELECT DISTINCT ON (p.origin_d) p.* FROM performance p JOIN requests r USING (request_id)\n           ORDER BY p.origin_d, r.created_at DESC) p JOIN calendar c ON c.d = p.origin_d ORDER BY 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "type": "row",
+      "title": "Monitor",
+      "gridPos": {
+        "x": 0,
+        "y": 9,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "type": "timeseries",
+      "title": "Input drift (PSI vs the champion's training reference)",
+      "description": "PSI above 0.25 is an alert; first monitor run of each day. Calendar features and age are not monitored: they change by design.",
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 16,
+        "h": 9
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "pg"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "pg"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "time_series",
+          "rawSql": "\nSELECT DISTINCT ON (m.run_d, m.subject) c.date::timestamp AS time, m.subject AS metric, m.value\nFROM monitor_results m JOIN calendar c ON c.d = m.run_d\nWHERE m.check_name = 'input_drift' AND m.value IS NOT NULL ORDER BY m.run_d, m.subject, m.run_at"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right"
+        }
+      }
+    },
+    {
+      "type": "table",
+      "title": "Alerts and model decisions",
+      "description": "",
+      "gridPos": {
+        "x": 16,
+        "y": 10,
+        "w": 8,
+        "h": 9
+      },
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "pg"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "pg"
+          },
+          "rawQuery": true,
+          "editorMode": "code",
+          "format": "table",
+          "rawSql": "\nSELECT c.date::text AS day, e.event AS what, coalesce('v' || e.model_version, '') AS model, e.reason AS detail\nFROM model_events e JOIN calendar c ON c.d = e.at_d\nUNION ALL\nSELECT c.date::text, 'alert', m.check_name || ': ' || m.subject,\n       coalesce(nullif(m.detail, ''), round(m.value::numeric, 3)::text)\nFROM monitor_results m JOIN calendar c ON c.d = m.run_d WHERE m.status = 'alert'\nORDER BY 1 DESC, 2"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "day"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "what"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 80
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "model"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 170
+              }
+            ]
+          }
+        ]
+      },
+      "options": {}
+    }
+  ]
+}

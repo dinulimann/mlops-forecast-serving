@@ -1,0 +1,54 @@
+{"decision": "promoted", "version": 1, "eval_wape": 0.7505961707912053, "eval_bias": -0.053693685464184446, "eval_rows": 85372, "eval_store_wape": 0.06016944072068566, "eval_naive_wape": 0.9132970140431038, "eval_rel_wape": 0.8218533064817185}
+{"week": "2015-05-31", "model": 1, "alerts": [], "seconds": 18.4}
+{"week": "2015-06-07", "model": 1, "alerts": [], "seconds": 20.5}
+{"week": "2015-06-14", "model": 1, "alerts": [], "seconds": 19.6}
+{"week": "2015-06-21", "model": 1, "alerts": [], "seconds": 20.3}
+{"week": "2015-06-28", "model": 1, "alerts": [], "seconds": 21.4}
+{"week": "2015-07-05", "model": 1, "alerts": [], "seconds": 20.5}
+{"week": "2015-07-12", "model": 1, "alerts": [], "seconds": 20.9}
+{"week": "2015-07-19", "model": 1, "alerts": [], "seconds": 20.5}
+{"week": "2015-07-26", "model": 1, "alerts": [], "seconds": 20.3}
+{"week": "2015-08-02", "model": 1, "alerts": [], "seconds": 20.6}
+{"week": "2015-08-09", "model": 1, "alerts": [], "seconds": 21.0}
+{"week": "2015-08-16", "model": 1, "alerts": [], "seconds": 19.5}
+{"week": "2015-08-23", "model": 1, "alerts": [], "seconds": 19.3}
+{"week": "2015-08-30", "model": 1, "alerts": [], "seconds": 20.3}
+{"week": "2015-09-06", "model": 1, "alerts": ["model_age:days"], "retrain": {"decision": "promoted", "version": 2, "reason": null, "eval_wape": 0.7691, "champion_eval_wape": 0.813}, "seconds": 229.7}
+{"week": "2015-09-13", "model": 2, "alerts": [], "seconds": 22.5}
+{"week": "2015-09-20", "model": 2, "alerts": [], "seconds": 20.8}
+{"week": "2015-09-27", "model": 2, "alerts": [], "seconds": 20.8}
+{"week": "2015-10-04", "model": 2, "alerts": ["data_quality:price_plausible"], "action": "prices re-delivered, forecast re-issued", "after_fix": [], "seconds": 38.7}
+{"week": "2015-10-11", "model": 2, "alerts": [], "seconds": 20.3}
+{"week": "2015-10-18", "model": 2, "alerts": [], "seconds": 19.7}
+{"week": "2015-10-25", "model": 2, "alerts": [], "seconds": 20.8}
+{"week": "2015-11-01", "model": 2, "alerts": [], "seconds": 20.3}
+{"week": "2015-11-08", "model": 2, "alerts": [], "seconds": 19.6}
+{"week": "2015-11-15", "model": 2, "alerts": [], "seconds": 19.4}
+{"week": "2015-11-22", "model": 2, "alerts": [], "seconds": 20.0}
+{"week": "2015-11-29", "model": 2, "alerts": [], "seconds": 19.8}
+{"week": "2015-12-06", "model": 2, "alerts": [], "seconds": 20.1}
+{"week": "2015-12-13", "model": 2, "alerts": ["model_age:days"], "retrain": {"decision": "promoted", "version": 3, "reason": null, "eval_wape": 0.7781, "champion_eval_wape": 0.8124}, "seconds": 219.4}
+{"week": "2015-12-20", "model": 3, "alerts": [], "seconds": 20.3}
+{"week": "2015-12-27", "model": 3, "alerts": [], "seconds": 20.2}
+{"week": "2016-01-03", "model": 3, "alerts": [], "seconds": 19.6}
+{"week": "2016-01-10", "model": 3, "alerts": [], "seconds": 20.4}
+{"week": "2016-01-17", "model": 3, "alerts": [], "seconds": 20.1}
+{"week": "2016-01-24", "model": 3, "alerts": [], "seconds": 20.1}
+{"week": "2016-01-31", "model": 3, "alerts": [], "seconds": 20.2}
+{"week": "2016-02-07", "model": 3, "alerts": [], "seconds": 32.2}
+{"week": "2016-02-14", "model": 3, "alerts": [], "seconds": 22.0}
+{"week": "2016-02-21", "model": 3, "alerts": [], "seconds": 20.6}
+{"week": "2016-02-28", "model": 3, "alerts": [], "seconds": 23.1}
+{"week": "2016-03-06", "model": 3, "alerts": [], "seconds": 20.5}
+{"week": "2016-03-13", "model": 3, "alerts": [], "seconds": 20.2}
+{"week": "2016-03-20", "model": 3, "alerts": ["model_age:days"], "retrain": {"decision": "promoted", "version": 4, "reason": null, "eval_wape": 0.7494, "champion_eval_wape": 0.7752}, "seconds": 248.4}
+{"week": "2016-03-27", "model": 4, "alerts": [], "seconds": 20.8}
+{"week": "2016-04-03", "model": 4, "alerts": [], "seconds": 20.4}
+{"week": "2016-04-10", "model": 4, "alerts": [], "seconds": 21.0}
+{"week": "2016-04-17", "model": 4, "alerts": [], "seconds": 20.7}
+{"week": "2016-04-24", "model": 4, "alerts": [], "seconds": 20.5}
+{"week": "2016-05-01", "model": 4, "alerts": [], "seconds": 20.4}
+{"week": "2016-05-08", "model": 4, "alerts": [], "seconds": 20.8}
+{"week": "2016-05-15", "model": 4, "alerts": [], "seconds": 20.8}
+{"week": "2016-05-22", "model": 4, "alerts": [], "seconds": 21.2}
+{"done": true, "scored_through": "2016-06-19"}

@@ -1,0 +1,30 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.13", cache: pip}
+      - run: pip install -r requirements.txt pytest
+      - run: pytest -v
+
+  replay:
+    runs-on: ubuntu-latest
+    needs: unit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.13", cache: pip}
+      - run: pip install -r requirements.txt httpx
+      - run: python -m mlops.prepare          # downloads M5 and checks its SHA-256
+      - run: docker compose up -d --build db mlflow api
+      - run: timeout 300 bash -c 'until curl -sf localhost:8090/health; do sleep 3; done'
+      - name: Ten weeks of operations with a broken price delivery in week 4 (small models)
+        env: {TRAIN_ROUNDS: "60", MLFLOW_DISABLE_AGENT_HINT: "1"}
+        run: python -m mlops.replay --start 2015-05-31 --end 2015-08-02 --incident 2015-06-21:FOODS_3
+      - run: python tools/e2e_check.py 2015-06-21
+      - if: failure()
+        run: docker compose logs --tail 200 api mlflow

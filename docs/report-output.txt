@@ -1,0 +1,29 @@
+{
+  "origins": 52,
+  "item_wape": {
+    "served": 0.7776927153846154,
+    "frozen": 0.8032775964101885,
+    "naive": 0.908982596346154
+  },
+  "store_wape": {
+    "served": 0.08092769436538463,
+    "frozen": 0.07709567554018829,
+    "naive": 0.1010481793676651
+  },
+  "events": {
+    "promoted": 5
+  },
+  "incident": [
+    {
+      "origin": "2015-10-04",
+      "wape_as_first_served": 0.7880662,
+      "wape_reissued": 0.78707933
+    }
+  ]
+}
+      date    event  version           reason
+2015-05-31 promoted        1          initial
+2015-09-06 promoted        2   model_age:days
+2015-12-13 promoted        3   model_age:days
+2016-01-10 promoted        4 performance:bias
+2016-04-17 promoted        5   model_age:days
