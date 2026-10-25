@@ -29,7 +29,7 @@ assert scored[0] >= 4 and scored[1] < 1, f"served forecasts should beat the seas
 
 r = httpx.post("http://localhost:8090/forecast", json={"origin": "2015-08-02", "ids": ["FOODS_3_090_CA_1"]}, timeout=60)
 assert r.status_code == 200 and len(r.json()["forecasts"]) == 28, r.text
-assert httpx.post("http://localhost:8090/forecast", json={"ids": ["NOPE_CA_1"]}).status_code == 404
+assert httpx.post("http://localhost:8090/forecast", json={"origin": "2015-08-02", "ids": ["NOPE_CA_1"]}).status_code == 404
 metrics = httpx.get("http://localhost:8090/metrics").text
 assert 'forecast_requests_total{status="ok"}' in metrics
 print(f"ok: {weeks} weeks served, {scored[0]} forecasts scored (mean WAPE vs naive {scored[1]:.2f}), incident detected and fixed")
