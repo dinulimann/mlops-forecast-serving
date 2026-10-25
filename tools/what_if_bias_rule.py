@@ -9,8 +9,12 @@ actually served until v4 took over.
     python tools/what_if_bias_rule.py
 """
 import json
+import sys
+from pathlib import Path
 
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # run as a script from the repo root
 
 from mlops import feed
 from mlops import features as F

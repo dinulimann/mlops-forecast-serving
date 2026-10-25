@@ -1,7 +1,10 @@
 """Assertions after a short replay in CI (see .github/workflows/ci.yml)."""
 import sys
+from pathlib import Path
 
 import httpx
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # run as a script from the repo root
 
 from mlops import feed
 
