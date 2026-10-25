@@ -27,7 +27,7 @@ assert redelivered == 1
 scored = q("SELECT count(*), avg(rel_wape) FROM performance")[0]
 assert scored[0] >= 4 and scored[1] < 1, f"served forecasts should beat the seasonal naive: {scored}"
 
-r = httpx.post("http://localhost:8090/forecast", json={"ids": ["FOODS_3_090_CA_1"]}, timeout=60)
+r = httpx.post("http://localhost:8090/forecast", json={"origin": "2015-08-02", "ids": ["FOODS_3_090_CA_1"]}, timeout=60)
 assert r.status_code == 200 and len(r.json()["forecasts"]) == 28, r.text
 assert httpx.post("http://localhost:8090/forecast", json={"ids": ["NOPE_CA_1"]}).status_code == 404
 metrics = httpx.get("http://localhost:8090/metrics").text
